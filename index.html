@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .video {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px;
+            background-color: #f2f2f2;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .video video {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        
+        @media only screen and (min-width: 601px) and (max-width: 1200px) {
+            .video {
+                width: calc(50% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video">
+            <video id="video1" src="/9-MAY-2023_INSTA_C21.mp4" loop preload="auto"></video>
+        </div>
+        <div class="video">
+            <video id="video2" src="/reel_1_C13.mp4" loop preload="auto"></video>
+        </div>
+        <div class="video">
+            <video id="video3" src="/reel_4_C13.mp4" loop preload="auto"></video>
+        </div>
+    </div>
+
+    <script>
+        const videos = ['video1', 'video2', 'video3'];
+        let currentIndex = 0;
+        let previousIndex = -1;
+
+        function playVideo(index) {
+            const video = document.getElementById(videos[index]);
+            video.play();
+            video.muted = false;
+        }
+
+        function pauseVideo(index) {
+            const video = document.getElementById(videos[index]);
+            video.pause();
+        }
+
+        function handleScroll() {
+            const scrollPosition = window.scrollY || window.pageYOffset;
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+            const currentVideoIndex = Math.floor((scrollPosition + windowHeight / 2) / windowHeight);
+
+            if (currentVideoIndex !== currentIndex) {
+                if (previousIndex !== -1) {
+                    pauseVideo(previousIndex);
+                }
+
+                playVideo(currentVideoIndex);
+
+                previousIndex = currentIndex;
+                currentIndex = currentVideoIndex;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            playVideo(currentIndex);
+            previousIndex = currentIndex;
+            currentIndex++;
+
+            window.addEventListener('scroll', handleScroll);
+        });
+    </script>
+</body>
+</html>
